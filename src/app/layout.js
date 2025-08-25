@@ -1,14 +1,12 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import {Roboto} from "next/font/google";
 import "./globals.css";
+import Header from "./components/layout/Header"
+import AppProvider from "./components/AppContext"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const roboto = Roboto({
   subsets: ["latin"],
+  weight: ["400", "500", "700"]
 });
 
 export const metadata = {
@@ -18,12 +16,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <html lang="en">
+      <body className={roboto.className}>
+      <main className="max-w-7xl mx-auto p-4">
+          <AppProvider>
+            <Header />
+            {children}
+            <footer className="border-t p-8 text-center mt-8 text-red-500">
+              &copy; 2025 All rights reserved. Built with Next.js and Tailwind CSS.
+            </footer>
+          </AppProvider>
+      </main>
       </body>
-    </html>
+      </html>
+
   );
 }
