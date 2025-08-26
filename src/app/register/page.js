@@ -6,8 +6,11 @@ import Link from "next/link";
 
 
 export default function RegisterPage(){
+    const [name, setName] = useState("");
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
+    const[image, setImage] = useState("");
+
     const [userCreated, setUserCreated] = useState(false);
     const[creatingUser, setCreatingUser] = useState(false);
     const[error, setError] = useState(false);
@@ -29,7 +32,7 @@ export default function RegisterPage(){
         console.log("handleformsubmit function is running");
         const response = await fetch('api/register', {
             method: 'POST',
-            body: JSON.stringify({email, password}),
+            body: JSON.stringify({name, email, password, image}),
             headers: {'Content-Type': 'application/json'},
         });
         if (response.ok) {
@@ -50,28 +53,44 @@ export default function RegisterPage(){
         <section className="text-center text-4xl text-red-700 mt-15">
             <h1>Register</h1>
             {userCreated && (
-                <div className="text-center text-red-700">User successfully created you can do 1 now
+                <div className="text-center text-red-700">User successfully created you can do 1 now{" "}
                     Also you can <Link href="/login" className="underline">Login</Link> &raquo;
                 </div>
             )}
-            {
-                error && (
-                    <div className="text-center text-red-700">
+            {error && (
+                <div className="text-center text-red-700">
                         error occured surprise motherfucker
-                    </div>
-                )
-            }
+                </div>
+            )}
             <form className='block max-w-xs mx-auto' onSubmit={handleFormSubmit}>
+                <input type={"text"}
+                       placeholder="Full Name"
+                       value={name}
+                       disabled={creatingUser}
+                       onChange={(e) => setName(e.target.value)}
+                       required/>
+
                 <input type="email"
                        placeholder="Email"
                        value={email}
                        disabled={creatingUser}
-                       onChange={(e => setEmail(e.target.value))}/>
+                       onChange={(e => setEmail(e.target.value))}
+                       required/>
+
                 <input type="password"
                        placeholder="Password"
                        value={password}
                        disabled={creatingUser}
-                       onChange={(e => setPassword(e.target.value))}/>
+                       onChange={(e => setPassword(e.target.value))}
+                       required/>
+
+                <input
+                    type="text"
+                    placeholder="Profile Image URL (optional)"
+                    value={image}
+                    disabled={creatingUser}
+                    onChange={(e) => setImage(e.target.value)}/>
+
                 <button type ="submit"
                         disabled={creatingUser}>Register</button>
                 <div className="my-4 text-center text-gray-500 text-sm">

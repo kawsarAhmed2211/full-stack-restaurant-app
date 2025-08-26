@@ -3,7 +3,7 @@ import NextAuth from "next-auth";
 import mongoose from "mongoose";
 import User from "../../../../models/User";
 
-const handler = NextAuth({
+export  const authOptions ={
     providers: [
         CredentialsProvider({
             secret: process.env.SECRET,
@@ -30,6 +30,8 @@ const handler = NextAuth({
             }
         })
     ]
-})
+}
+
+const handler = NextAuth(authOptions);
 
 export {handler as GET, handler as POST }
