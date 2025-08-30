@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.10.0",
+    "@aws-sdk/client-s3": "^3.878.0",
     "mongodb": "^6.18.0",
     "mongoose": "^8.17.1",
     "next": "15.4.6",

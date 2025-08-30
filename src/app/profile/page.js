@@ -1,25 +1,42 @@
 "use client";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export default function ProfilePage() {
     const session = useSession();
     const { status } = session;
-    const[userName, setUserName] = useState(session?.data?.user?.name || "");
+    const[userName, setUserName] = useState("");
+    const [savedProfile, setSavedProfile] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+
     console.log("Session from profile", session);
 
+    useEffect(() => {
+        if(status === "authenticated"){
+            setUserName(session?.data?.user?.name);
+        }
+    },[session, status]);
 
 
-    // function handleProfileInfoUpdate(e){
-    //     e.preventDefault();
-    //     const response=fetch("/api/profile",{
-    //         method: "PUT",
-    //         headers: {"Content-Type": "application/json"},
-    //         body: JSON.stringify({name: userName}),
-    //     })
-    // }
+    async function handleProfileInfoUpdate(e){
+        e.preventDefault();
+        setSavedProfile(false);
+        setIsSaving(true);
+        const response= await fetch("/api/profile",{
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({name: userName}),
+        });
+        setIsSaving(false);
+        if(response.ok){
+            console.log("Response from profile/page.js",response);
+            setSavedProfile(true);
+        }
+
+
+    }
 
     if (status === "loading") {
         return "loading...";
@@ -32,24 +49,58 @@ export default function ProfilePage() {
     const userImage = session.data?.user?.image;
     console.log("X",session.data?.user);
 
+    async function handleFileChange(e){
+        console.log("gggg");
+        //console.log(e);
+        console.log("files");
+        const files = e.target.files;
+        console.log("files", files);
+        if(files?.length === 1){
+            const data = new FormData;
+            data.set("files", files[0]);
+            console.log("function for data in api/upload ",data);
+            await fetch("api/upload",{
+                method: "POST",
+                body: data
+            })
+        }
+    }
+
     return (
         <>
             <section>
                 <h1>Profile</h1>
-                <form className="max-w-xs mx-auto border">
+
+                {savedProfile &&
+                    (<h2 className="bg-green-500 text-center mt-8 mb-5">Profile Saved</h2>)
+                }
+
+                {isSaving &&(
+                    <h2 className="bg-blue-300 text-center mt-8 mb-5">
+                        Profile Saved
+                    </h2>
+                )}
+                <form className="max-w-xs mx-auto border" onSubmit={handleProfileInfoUpdate}>
                     <div className="flex gap-4 items-center">
                        <div>
                            <div className="p-2 rounded-lg relative">
                                <Image className="rounded-lg w-full h-full mb-1" src={userImage}
                                width={250} height={250} alt={"avatar"}/>
-                               <button type="button"> Edit</button>
+                               <label>
+                                   <input type="file" className="hidden" onChange = {handleFileChange}/>
+                                   <span className="text-center block cursor-pointer">Edit</span>
+                               </label>
                            </div>
                        </div>
                         <div className="grow">
-                            <input type={"text"} placeholder={"first and last name"}
-                            value={userName}/>
-                            <input className="text-white" type={"email"} disabled={true} value={session?.data?.user?.email}/>
-                            <button type={"submit"}>Save</button>
+                            <input
+                                type="text"
+                                value={userName}
+                                onChange={e => setUserName(e.target.value)}
+                            />
+
+                            <input className="text-white" type="email" disabled={true} value={session?.data?.user?.email}/>
+                            <button type="submit">Save</button>
                         </div>
 
                     </div>
