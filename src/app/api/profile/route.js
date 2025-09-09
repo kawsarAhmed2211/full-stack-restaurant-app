@@ -22,5 +22,5 @@ export async function PUT(req){
         console.log("newUser",newUser);
     }
 
-    return Response.json(true);
+    return Response.json( true);
 }
