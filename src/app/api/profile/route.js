@@ -14,11 +14,21 @@ export async function PUT(req){
     const user = await User.findOne({email});
     console.log(user);
 
+    const update ={};
     if("name" in data){
         console.log("Name in /api/profile",session.user.name);
         console.log("Email in /api/profile",session.user.email);
+        update.name = data.name;
 
-        const newUser = await User.updateOne({email}, {name:data.name});
+    }
+    if("image" in data){
+        console.log("image updated in api/profile", session.user.image);
+        update.image = data.image;
+        console.log("image updated in api/profile", session.user.image);
+    }
+    if(Object.keys(update).length > 0){
+
+        const newUser = await User.updateOne({email}, update);
         console.log("newUser",newUser);
     }
 

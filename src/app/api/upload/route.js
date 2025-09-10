@@ -33,10 +33,10 @@ export async function POST(req) {
             Body: buffer,
         }));
 
-        const link = `https://${bucket}.s3.amazonaws.com/${newFileName}`;
-        console.log("Link:", link);
+        const fileUrl = `https://${bucket}.s3.amazonaws.com/${newFileName}`;
+        console.log("Link from upload/route.js:", fileUrl);
 
-        return Response.json(link);
+        return Response.json(fileUrl);
     }
     return Response.json(true);
 }

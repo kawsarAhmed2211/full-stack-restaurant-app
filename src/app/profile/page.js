@@ -3,19 +3,23 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import {useEffect, useState} from "react";
+import InfoBox from "../components/layout/InfoBox";
+import SuccessBox from "../components/layout/SuccessBox";
 
 export default function ProfilePage() {
     const session = useSession();
     const { status } = session;
     const[userName, setUserName] = useState("");
+    const [image, setImage] = useState("");
     const [savedProfile, setSavedProfile] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
-
+    const [isUploading, setIsUploading] = useState(false);
     console.log("Session from profile", session);
 
     useEffect(() => {
         if(status === "authenticated"){
             setUserName(session?.data?.user?.name);
+            setImage(session?.data?.user?.image);
         }
     },[session, status]);
 
@@ -27,15 +31,13 @@ export default function ProfilePage() {
         const response= await fetch("/api/profile",{
             method: "PUT",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({name: userName}),
+            body: JSON.stringify({name: userName, image}),
         });
         setIsSaving(false);
         if(response.ok){
             console.log("Response from profile/page.js",response);
             setSavedProfile(true);
         }
-
-
     }
 
     if (status === "loading") {
@@ -46,7 +48,7 @@ export default function ProfilePage() {
         return redirect("/login");
     }
 
-    const userImage = session.data?.user?.image;
+    //const userImage = session.data?.user?.image;
     console.log("X",session.data?.user);
 
     async function handleFileChange(e){
@@ -58,11 +60,22 @@ export default function ProfilePage() {
         if(files?.length === 1){
             const data = new FormData;
             data.set("files", files[0]);
+            setIsUploading(true);
             console.log("function for data in api/upload ",data);
-            await fetch("api/upload",{
+            const response = await fetch("api/upload",{
                 method: "POST",
                 body: data
             })
+
+            console.log("response from profile/page.js: ", response);
+
+            const link = await response.json();
+
+            console.log("link from profile/page.js", link);
+
+            setImage(link);
+
+            setIsUploading(false);
         }
     }
 
@@ -71,21 +84,27 @@ export default function ProfilePage() {
             <section>
                 <h1>Profile</h1>
 
-                {savedProfile &&
-                    (<h2 className="bg-green-500 text-center mt-8 mb-5">Profile Saved</h2>)
-                }
+                {savedProfile && (
+                    <SuccessBox>Profile Saved</SuccessBox>
+                )}
 
                 {isSaving &&(
-                    <h2 className="bg-blue-300 text-center mt-8 mb-5">
-                        Profile Saved
-                    </h2>
+                    <InfoBox>Profile Saving...</InfoBox>
+                )}
+
+                {isUploading &&(
+                    <InfoBox>Uploading...</InfoBox>
                 )}
                 <form className="max-w-xs mx-auto border" onSubmit={handleProfileInfoUpdate}>
                     <div className="flex gap-4 items-center">
                        <div>
-                           <div className="p-2 rounded-lg relative">
-                               <Image className="rounded-lg w-full h-full mb-1" src={userImage}
-                               width={250} height={250} alt={"avatar"}/>
+                           <div className="p-2 rounded-lg relative max-w-[120px]">
+                               {
+                                   image && (
+                                       <Image className="rounded-lg w-full h-full mb-1" src={image} width={250} height={250} alt={"avatar"} />
+                                   )
+                               }
+
                                <label>
                                    <input type="file" className="hidden" onChange = {handleFileChange}/>
                                    <span className="text-center block cursor-pointer">Edit</span>
