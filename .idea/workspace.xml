@@ -47,6 +47,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Node.js.page.js.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
@@ -72,15 +73,23 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Users\ahmed\Documents\full-stack-restaurant-web-app\src\app\components" />
+      <recent name="D:\Users\ahmed\Documents\full-stack-restaurant-web-app\src\app\menuitems\edit\[id]" />
+      <recent name="D:\Users\ahmed\Documents\full-stack-restaurant-web-app\src\app\menuitems" />
       <recent name="D:\Users\ahmed\Documents\full-stack-restaurant-web-app\src\app" />
+      <recent name="D:\Users\ahmed\Documents\full-stack-restaurant-web-app\src\app\components" />
       <recent name="D:\Users\ahmed\Documents\full-stack-restaurant-web-app\src\app\api" />
-      <recent name="D:\Users\ahmed\Documents\full-stack-restaurant-web-app\src\app\api\auth" />
-      <recent name="D:\Users\ahmed\Documents\full-stack-restaurant-web-app\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.Next.js: server-side">
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="{" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Node.js.page.js">
     <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
+      <method v="2" />
+    </configuration>
+    <configuration name="page.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/app/menuitems/page.js" working-dir="$PROJECT_DIR$/src/app/menuitems">
       <method v="2" />
     </configuration>
     <configuration name="Next.js: server-side" type="js.build_tools.npm">
@@ -93,6 +102,11 @@
       <envs />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.page.js" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -103,7 +117,9 @@
       <updated>1755172109034</updated>
       <workItem from="1755172110406" duration="8742000" />
       <workItem from="1755267530142" duration="45160000" />
-      <workItem from="1756225135909" duration="56664000" />
+      <workItem from="1756225135909" duration="59943000" />
+      <workItem from="1757599196498" duration="40823000" />
+      <workItem from="1758551040817" duration="77764000" />
     </task>
     <servers />
   </component>
@@ -115,7 +131,6 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/app/components/layout/Hero.js</url>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

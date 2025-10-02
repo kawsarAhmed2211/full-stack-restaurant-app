@@ -6,7 +6,7 @@ import User from "../../../models/User";
 export async function POST(req) {
     try {
         const body = await req.json(); // ✅ get body
-        console.log("The body in json format is: ", body);
+        //console.log("The body in json format is: ", body);
 
         await mongoose.connect(process.env.MONGODB_URI);
 
@@ -17,7 +17,7 @@ export async function POST(req) {
             image: body.image || "/default_picture.png", // fallback default
         });
 
-        console.log("Here is user: ", createdUser);
+        //console.log("Here is user: ", createdUser);
         return NextResponse.json({ createdUser });
     } catch (err) {
         console.error(err);

@@ -34,7 +34,7 @@ export async function POST(req) {
         }));
 
         const fileUrl = `https://${bucket}.s3.amazonaws.com/${newFileName}`;
-        console.log("Link from upload/route.js:", fileUrl);
+        console.log("Link from upload/page.js:", fileUrl);
 
         return Response.json(fileUrl);
     }

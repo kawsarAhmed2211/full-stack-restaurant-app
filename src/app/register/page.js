@@ -29,7 +29,7 @@ export default function RegisterPage(){
         /*
         the fetch link has to be the same as the folder directory structure in tnhis it is api/auth/register/
          */
-        console.log("handleformsubmit function is running");
+        //console.log("handleformsubmit function is running");
         const response = await fetch('api/register', {
             method: 'POST',
             body: JSON.stringify({name, email, password, image}),
@@ -43,8 +43,8 @@ export default function RegisterPage(){
             setError(true);
             //setError is sset to true because an error now and need sto show it
             const data = await response.json();
-            console.log("Server response:", data);
-            console.log("successfully registered");
+            //console.log("Server response:", data);
+            //console.log("successfully registered");
         }
         setCreatingUser(false);
     }
@@ -106,7 +106,7 @@ export default function RegisterPage(){
 }
 
 /*
- * [Error: No response is returned from route handler 'D:\Users\ahmed\Documents\full-st
+ * [Error: No response is returned from route handler 'D:\users\ahmed\Documents\full-st
  * ack-restaurant-web-app\src\app\api\auth\register\page.js'. Ensure you return a `Response` or a `NextResponse` in all branches of your handler.]
  *  POST /api/auth/register 500 in 5807ms
  *
