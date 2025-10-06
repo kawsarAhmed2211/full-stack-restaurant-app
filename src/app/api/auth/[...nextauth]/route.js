@@ -1,7 +1,8 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import NextAuth from "next-auth";
+import NextAuth, {getServerSession} from "next-auth";
 import mongoose from "mongoose";
 import User from "../../../../models/User";
+import UserInfo from "../../../../models/UserInfo";
 
 export  const authOptions ={
     providers: [
@@ -30,6 +31,19 @@ export  const authOptions ={
             }
         })
     ]
+}
+
+export async function isAdmin() {
+    const session = await getServerSession(authOptions);
+    const userEmail = session?.user?.email;
+    if (!userEmail) {
+        return false;
+    }
+    const userInfo = await UserInfo.findOne({email:userEmail});
+    if (!userInfo) {
+        return false;
+    }
+    return userInfo.admin;
 }
 
 const handler = NextAuth(authOptions);

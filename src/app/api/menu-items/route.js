@@ -1,6 +1,7 @@
 import {MenuItem} from "../../../models/MenuItem";
 import mongoose from "mongoose";
 
+
 export async function POST(req){
     mongoose.connect(process.env.MONGODB_URI);
     const data = await req.json();
@@ -20,4 +21,11 @@ export async function GET(req){
 
     const menuItems = await MenuItem.find();   // fetch all items
     return Response.json(menuItems);
+}
+
+export async function DELETE(req) {
+    await mongoose.connect(process.env.MONGODB_URI);
+    const {_id} = await req.json();
+    await MenuItem.deleteOne({_id});
+    return Response.json(true);
 }

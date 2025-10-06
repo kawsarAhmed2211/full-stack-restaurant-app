@@ -22,3 +22,10 @@ export async function PUT(req){
     await Category.updateOne({_id}, {name});
     return Response.json(true);
 }
+
+export async function DELETE(req){
+    mongoose.connect(process.env.MONGODB_URI);
+    const {_id} = await req.json();
+    await Category.deleteOne({_id});
+    return Response.json(true);
+}

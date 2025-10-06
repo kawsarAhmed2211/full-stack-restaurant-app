@@ -111,6 +111,7 @@ import Link from "next/link";
 import Left from "../../../components/icons/Left";
 import Right from "../../../components/icons/Right";
 import MenuItemFormPage from "../../../components/layout/MenuItemForm";
+import DeleteButton from "../../../components/DeleteButton";
 
 export default function EditMenuItem() {
     const { id } = useParams();
@@ -134,6 +135,28 @@ export default function EditMenuItem() {
     if (!data?.admin) {
         return "Not an admin...";
     }
+
+    async function deleteMenuItemButton(){
+        const deletingPromise = new Promise(async(resolve, reject) => {
+            const response = await fetch("/api/menu-items?_id="+id,{
+                method: "DELETE",
+                body: JSON.stringify({_id:id}),
+                headers: { "Content-Type": "application/json" },
+            })
+            if(response.ok){
+                resolve();
+            }else{
+                reject();
+            }
+        })
+        await toast.promise(deletingPromise, {
+            loading: "Deleting this item...",
+            success: "Item successfully deleted!",
+            error: "delete failed!",
+        });
+        setRedirectToItems(true);
+    }
+
 
     async function handleMenuPageForm(e, data) {
         e.preventDefault();
@@ -167,18 +190,18 @@ export default function EditMenuItem() {
             <UserTabs admin={true} />
             <div className="mt-8 flex justify-center">
                 <Link href={"/menuitems"}>
-          <span>
-            <Left /> Show all menu items <Right />
-          </span>
+                <Left />
+                  <span>Show all menu items</span>
                 </Link>
             </div>
-
-            {/* Don’t render until menuItem is loaded */}
-            {menuItem ? (
                 <MenuItemFormPage menuItem={menuItem} onSubmit={handleMenuPageForm} />
-            ) : (
-                <p>Loading menu item...</p>
-            )}
+            <div>
+                <DeleteButton label={"Delete this menu item"}
+                onDelete={deleteMenuItemButton}/>
+                {/*< ><button type="button"*/}
+                {/*onClick={deleteMenuItemButton}*/}
+                {/*>Delete this menu item</button></>*/}
+            </div>
         </section>
     );
 }

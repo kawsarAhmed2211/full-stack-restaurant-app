@@ -17,6 +17,7 @@ export default function UserTabs({admin}){
                             <Link href={"/categories"}>Categories</Link>
                             <Link href={"/menuitems"}>Menu Items</Link>
                             <Link  href={"/users"}>Users</Link>
+                            <Link href={"/orders"}>Orders</Link>
                         </>
                     )
                 }

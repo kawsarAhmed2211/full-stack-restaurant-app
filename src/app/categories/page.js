@@ -128,6 +128,8 @@ import UserTabs from "../components/layout/UserTabs";
 import { useEffect, useState } from "react";
 import { useProfile } from "../components/UseProfile";
 import toast from "react-hot-toast";
+import DeleteButton from "../components/DeleteButton";
+
 
 export default function CategoryPage() {
     const { loading: profileLoading, data: profileData } = useProfile();
@@ -172,6 +174,29 @@ export default function CategoryPage() {
         });
     }
 
+    async function handleDeleteButton(_id){
+        const promise = new Promise(async (resolve, reject) => {
+            const response = await fetch("/api/categories?_id="+ _id, {
+                method: "DELETE",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({_id}),
+            })
+            if(response.ok){
+                resolve();
+            }else{
+                reject();
+            }
+        })
+
+        await toast.promise(promise,{
+            loading: "Deleting",
+            success: "Deleted",
+            error: "error from deleting category",
+            }
+        )
+        fetchCategories();
+    }
+
     if (profileLoading) {
         return "Loading from /categories page...";
     }
@@ -200,27 +225,45 @@ export default function CategoryPage() {
                         onChange={(e) => setCategoryName(e.target.value)}
                     />
                 </div>
-                <div>
+                <div className="flex gap-3">
                     <button type="submit">
                         {editedCategory ? "Update Category" : "Create Category"}
                     </button>
+                    <button className="bg-blue-300"
+                            type="button"
+                            onClick={()=> {
+                                setEditedCategory(null);
+                                setCategoryName("");
+                    }}>Cancel</button>
                 </div>
             </form>
 
             <div>
-                <h2 className="mt-8">Edit Categories</h2>
+                <h2 className="mt-8">Existing Categories</h2>
                 {categories.length > 0 &&
                     categories.map((category) => (
-                        <button
+                        <div
                             className="bg-red-400 rounded-xl gap-2 p-2 px-4 flex cursor-pointer"
                             key={category._id}
-                            onClick={() => {
-                                setEditedCategory(category);
-                                setCategoryName(category.name);
-                            }}
                          >
-                            <span>{category.name}</span>
-                        </button>
+                            {/*<span>{category.name}</span>*/}
+                            <div className="flex items-center gap-2">
+                                <span>{category.name}</span>
+                                <button
+                                    onClick={() => {
+                                        setEditedCategory(category);
+                                        setCategoryName(category.name);
+                                    }}
+                                    type="button">Edit</button>
+                                <DeleteButton label="Delete" onDelete={() => handleDeleteButton(category._id)}/>
+                                {/*<button*/}
+                                {/*    onClick={()=>{*/}
+                                {/*        handleDeleteButton(category._id)*/}
+                                {/*    }}*/}
+                                {/*    type="button"*/}
+                                {/*    >Delete</button>*/}
+                            </div>
+                        </div>
                     ))}
             </div>
         </section>

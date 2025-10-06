@@ -1,22 +1,22 @@
 import mongoose from "mongoose";
 import {getServerSession} from "next-auth";
 import {authOptions} from "../auth/[...nextauth]/route";
-import User from "../../../models/User";
+import {User} from "../../../models/User";
 import UserInfo from "../../../models/UserInfo";
 
 export async function PUT(req){
-    mongoose.connect(process.env.MONGODB_URI);
-    const data = await req.json();
+    await mongoose.connect(process.env.MONGODB_URI);
+    //const data = await req.json();
     //const{name, image} = data;
     const{name, image, ...otherUserInfo} = data;
-    console.log("data in api/profile", otherUserInfo);
+    //console.log("data in api/profile", otherUserInfo);
     const session = await getServerSession(authOptions);
     //console.log("Session," , session);
-    console.log("data: in profile/page.js",{session,data});
+    //console.log("data: in profile/page.js",{session,data});
     const email = session.user.email;
     //console.log("email in /api/profile",email);
     const userData = {name: data.name, image: data.image};
-    console.log("userdata", userData);
+    //console.log("userdata", userData);
     await User.updateOne({email}, {name, image});
 
     // await User.updateOne({email}, otherUserInfo);

@@ -10,9 +10,11 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import UserTabs from "../components/layout/UserTabs";
 import EditableImage from "../components/layout/EditableImage";
+import UserForm from "../components/layout/UserForm";
 
 export default function ProfilePage() {
     const session = useSession();
+    const [user, setUser] = useState(null);
     const { status } = session;
     const[userName, setUserName] = useState("");
     const [image, setImage] = useState("");
@@ -142,17 +144,19 @@ export default function ProfilePage() {
     return (
         <>
             <section>
-                <UserTabs admin={admin} />
-                {/*<div className="flex mx-auto gap-2 tabs justify-center">*/}
-                {/*    <Link className={"active"} href={"/profile"}> Profile </Link>*/}
-                {/*    {admin && (*/}
-                {/*        <>*/}
-                {/*        <Link href="/categories">categories</Link>*/}
-                {/*        <Link href={"/menuitems"}>menu-items</Link>*/}
-                {/*        <Link href={"/users"}> Users</Link>*/}
-                {/*        </>*/}
-                {/*    )}*/}
-                {/*</div>*/}
+                {/*<UserTabs admin={admin} />*/}
+                {/*<UserForm user={user} onSave={handleProfileInfoUpdate} />*/}
+                <div className="flex mx-auto gap-2 tabs justify-center">
+                    <Link className={"active"} href={"/profile"}> Profile </Link>
+                    {admin && (
+                        <>
+                        <Link href="/categories">categories</Link>
+                        <Link href={"/menuitems"}>menu-items</Link>
+                        <Link href={"/users"}> Users</Link>
+                            <Link href={"/orders"}>Orders</Link>
+                        </>
+                    )}
+                </div>
                 {/*<UserTabs admin={admin} />*/}
                 {/*<h1>Profile</h1>*/}
 
